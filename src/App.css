@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+IE+Guides&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.pageTitle{
+  color: aliceblue;
+    font-family: 'Playwrite IE Guides', sans-serif; 
+}
+
+.home{
+  display: flex;
+  flex-wrap: wrap;
+margin-top: 3vw ;
+margin-right: 6vw;
+justify-content: space-around;
+background-color: rgb(108, 108, 109);
+margin: 2vw;
+border:8px solid black;
+border-radius: 10px;
+padding: 2vw;
+}
+
+.graph-container {
+    width: 100%;
+    max-width: 600px; /* Optional: restrict max width */
+    margin: 0 auto; /* Center the graph */
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.svg-graph {
+    width: 100%;
+    height: auto;
+    max-height: 100vh;
+    background: #f9f9f9;
+    border: 5px solid black;
+    border-radius: 5px;
+}
+
+
