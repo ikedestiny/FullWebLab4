@@ -2,8 +2,6 @@ import { create } from "zustand";
 
 
 const loginStore = (set) => ({
-    email: "",
-    password: "",
     token: null,
     isLoggedIn: false,
     login: (newToken) => set({ token: newToken, isLoggedIn: true }),
@@ -11,4 +9,4 @@ const loginStore = (set) => ({
 })
 
 
-export default useLogin = create(loginStore)
+export default create(loginStore)
