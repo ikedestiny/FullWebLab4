@@ -1,47 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import Navbar from "../layout/navbar";
-import { authActions } from "../state/actionCreators/actions";
-import { bindActionCreators } from "redux";
-
-
-
-
+import { useState } from "react";
+import UseRegister from "../zustandStates/RegStore"; // Correct hook import
+import { send_register_request } from "../Apicalls"; // If you are still using this for API calls
 
 export default function Register() {
-    const dispatch = useDispatch()
-    const state = useSelector((state) => state.authRed)
-    console.log(state)
-    let actions = bindActionCreators(authActions,dispatch)
-    
+    // Accessing state and actions from the Zustand store
+    const { email, password, username, setEmail, setPassword, setUsername, register } = UseRegister();
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        const response = await fetch("http://127.0.0.1:8080/api/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(state)
-
-        })
-
-        if (response.status == 201) {
-            dispatch(authActions.CLEAR())
-            alert("SUCCESS")
-            return (
-                <p>Sucess</p>
-            )
-        }
-    }
-
-
-
-
-
-
+        e.preventDefault();
+        // Call the register method from Zustand store
+        await register();
+    };
 
     return (
-
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
@@ -50,8 +21,7 @@ export default function Register() {
                             <h3>Register</h3>
                         </div>
                         <div className="card-body">
-                            {/* <form onSubmit={handleSubmit}> */}
-                            <form onSubmit={(e) => handleSubmit(e)}>
+                            <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="form-label">Username</label>
                                     <input
@@ -59,8 +29,8 @@ export default function Register() {
                                         className="form-control"
                                         id="name"
                                         name="name"
-                                        value={state.username}
-                                        onChange={(e) => dispatch(authActions.SET_USERNAME(e.target.value))}
+                                        value={username} // Directly using username from the Zustand state
+                                        onChange={(e) => setUsername(e.target.value)} // Update using the setUsername action
                                         required
                                     />
                                 </div>
@@ -71,8 +41,8 @@ export default function Register() {
                                         className="form-control"
                                         id="email"
                                         name="email"
-                                        value={state.email}
-                                        onChange={(e) => { dispatch(authActions.SET_EMAIL(e.target.value)) }}
+                                        value={email} // Directly using email from Zustand state
+                                        onChange={(e) => setEmail(e.target.value)} // Update using the setEmail action
                                         required
                                     />
                                 </div>
@@ -83,8 +53,8 @@ export default function Register() {
                                         className="form-control"
                                         id="password"
                                         name="password"
-                                        value={state.password}
-                                        onChange={(e) => dispatch(authActions.SET_PASSWORD(e.target.value))}
+                                        value={password} // Directly using password from Zustand state
+                                        onChange={(e) => setPassword(e.target.value)} // Update using the setPassword action
                                         required
                                     />
                                 </div>
@@ -99,6 +69,5 @@ export default function Register() {
                 </div>
             </div>
         </div>
-
-    )
+    );
 }
