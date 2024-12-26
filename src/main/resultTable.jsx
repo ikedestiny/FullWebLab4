@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../state/actionCreators/actions";
+import useLogin from "../zustandStates/LoginStore"
 
 
 
@@ -8,7 +9,8 @@ export default function ResultTable() {
     const dispatch = useDispatch();
     const results = useSelector((state) => state.tableValues.results);
     const loading = useSelector((state) => state.tableValues.loading);
-    const token = useSelector((state) => state.loginRed.token)
+    //const token = useSelector((state) => state.loginRed.token)
+    const {token} = useLogin()
     // console.log(token)
     // dispatch(actions.GET_ALL(to))
 

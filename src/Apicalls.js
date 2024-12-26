@@ -34,3 +34,40 @@ export const send_register_request = async (credentials) => {
         throw error; // Rethrow the error to handle it elsewhere
     }
 }
+
+
+export const get_all_results = async (token) => {
+    const response = await axios.get(
+        url + "/results", {
+        headers: {
+            "Authorization": `Bearer ${token}`, // Attach Bearer token
+            "Content-Type": "application/json"
+        }
+    }
+    )
+
+    return response.data;
+}
+
+
+export const send_delete_all_request = async (token) => {
+    const response = await axios.delete(
+        url + "/results", {
+        headers: {
+            "Authorization": `Bearer ${token}`, // Attach Bearer token
+            "Content-Type": "application/json"
+        }
+    }
+    )
+}
+
+export const send_add_request = async (token) => {
+    const response = await axios.post(
+        url + "/results", {
+        headers: {
+            "Authorization": `Bearer ${token}`, // Attach Bearer token
+            "Content-Type": "application/json"
+        }
+    }
+    )
+}

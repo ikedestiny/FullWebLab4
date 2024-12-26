@@ -3,8 +3,10 @@ import Xbuttons from "../inputs/xInput";
 import RequestForm from "../inputs/request";
 import Graph from "./graph";
 import ResultTable from "./resultTable";
+import loginState from "../zustandStates/LoginStore"
 
 export default function Home() {
+    console.log(loginState)
     return (
         <>
             <div className="home">

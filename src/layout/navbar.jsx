@@ -2,11 +2,11 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { authActions } from "../state/actionCreators/actions";
+import useLogin from "../zustandStates/LoginStore"
 export default function Navbar() {
-    const loginState = useSelector((state)=>state.loginRed)
     const dispatch = useDispatch()
 const navigate =  useNavigate()
-    
+    const {isLoggedIn,logout} = useLogin()
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-secondary">
@@ -20,11 +20,9 @@ const navigate =  useNavigate()
                     </a>
                     <div > <h1 className="pageTitle">Web Lab 4</h1></div>
                     <div>
-                        <button className="btn btn-outline-light mx-2"  onClick={()=>{
-                            dispatch(authActions.LOGOUT())
-                            navigate("/")
-                            
-                        }}>{loginState.loggedIn ? "LOGOUT" : "LOGIN"}</button>
+                        <button className="btn btn-outline-light mx-2"  onClick={()=>{logout() }}>
+                            {isLoggedIn ? "LOGOUT" : "LOGIN"}
+                        </button>
                         <Link className="btn btn-outline-light mx-2" to="/register">register</Link>
                         <Link className="btn btn-outline-light mx-2" to="/home">Home</Link>
                     </div>

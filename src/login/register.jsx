@@ -4,12 +4,13 @@ import { send_register_request } from "../Apicalls"; // If you are still using t
 
 export default function Register() {
     // Accessing state and actions from the Zustand store
-    const { email, password, username, setEmail, setPassword, setUsername, register } = UseRegister();
+    const { email, password, username, setEmail, setPassword, setUsername, register, clear } = UseRegister();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Call the register method from Zustand store
         await register();
+        clear()
     };
 
     return (
