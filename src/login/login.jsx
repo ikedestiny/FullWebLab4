@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useLogin from "../zustandStates/LoginStore"
-import { useState } from "react";
-import { send_login_request } from "../Apicalls"
+import { useEffect } from "react";
+
 
 
 //const url = "http://127.0.0.1:8080/api";
@@ -14,9 +14,10 @@ export default function Login() {
     // const loginReducer = useSelector((state) => state.loginRed)
     // console.log(loginReducer)
         let navigate = useNavigate()
-        const [email,setEmail] = useState("");
-        const [password,setPassword] = useState('');
-        const login = useLogin((state) => state.login)
+        
+        const {login,set_email,set_password,email,password} = useLogin()
+
+
 
 
 //   const handleLogin = async (e) => {
@@ -37,41 +38,14 @@ export default function Login() {
 //         );
 
 // }
-
+     
 
 const handleLogin = async (e) => {
-    e.preventDefault();
-
-    const credentials = {
-        email: email,
-        password: password
-    }
-
-    let token;
-
-     try {
-             token =await send_login_request({ credentials });
-            console.log("Login successful, token:", token);
-            login(token)
-            if(token.length > 10){
-                navigate("/home")
-            }else console.log("token is null")
-        } catch (error) {
-            console.error("Login failed:", error.message);
-        }
-
-    // const response = await axios.post(url + "/login", {
-    //             email: credentials.email,
-    //             password: credentials.password,
-    //             username: "",
-    //         });
-    
-    //         console.log(response); // Log the full response for debugging
-    //         const token = response.data; // Assuming the token is in the response data
-    //         console.log(token);
-    //         login(token)
-
-            
+    e.preventDefault()
+const newtoken  =     await login()
+if(newtoken != null){
+    navigate("/home")
+}else alert("access not granted")
 }
     return (
         <div className="container mt-5">
@@ -93,7 +67,7 @@ const handleLogin = async (e) => {
                                         id="email"
                                         name="email"
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) => set_email(e.target.value)}
                                         required
                                     />
                                 </div>
@@ -105,7 +79,7 @@ const handleLogin = async (e) => {
                                         id="password"
                                         name="password"
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) => set_password(e.target.value)}
                                         required
                                     />
                                 </div>

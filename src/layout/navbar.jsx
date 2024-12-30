@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { authActions } from "../state/actionCreators/actions";
 import useLogin from "../zustandStates/LoginStore"
 export default function Navbar() {
-    const dispatch = useDispatch()
-const navigate =  useNavigate()
-    const {isLoggedIn,logout} = useLogin()
+
+    const logout = useLogin(state => state.logout)
+    const isLoggedIn = useLogin(state => state.isLoggedIn)
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-secondary">

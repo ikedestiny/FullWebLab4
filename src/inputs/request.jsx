@@ -1,15 +1,15 @@
-import { useSelector, useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actions } from "../state/actionCreators/actions";
 import Notification from "../layout/Notification";
 import { useState } from "react";
+import RequestStore from "../zustandStates/RequestStore";
+import LoginStore from "../zustandStates/LoginStore";
 
 export default function RequestForm() {
-    const reqReducer = useSelector((state) => state.request);
-    const loginReducer = useSelector((state) => state.loginRed);
-    const dispatch = useDispatch();
-    const { setX, setY, setR } = bindActionCreators(actions, dispatch);
-    const token = loginReducer.token;
+    // const reqReducer = useSelector((state) => state.request);
+    // const loginReducer = useSelector((state) => state.loginRed);
+    // const dispatch = useDispatch();
+    // const { setX, setY, setR } = bindActionCreators(actions, dispatch);
+    const { token } = LoginStore()
+    const { add_point, set_r, set_x, set_y, x, y, r, get_all } = RequestStore()
 
     const [notification, setNotification] = useState({ show: false, message: "", type: "" });
 
@@ -18,9 +18,10 @@ export default function RequestForm() {
         setTimeout(() => setNotification({ show: false, message: "", type: "" }), 15000);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
+        console.log("token: " + token)
         e.preventDefault();
-        dispatch(actions.SEND_POINT(token, reqReducer, showNotification));
+        await add_point(token)
     };
 
     return (
@@ -38,8 +39,8 @@ export default function RequestForm() {
                                 className="form-control"
                                 id="x"
                                 name="x"
-                                onChange={(e) => setX(e.target.value)}
-                                value={reqReducer.x}
+                                onChange={(e) => set_x(e.target.value)}
+                                value={x}
                                 required
                             />
                         </div>
@@ -50,8 +51,8 @@ export default function RequestForm() {
                                 className="form-control"
                                 id="y"
                                 name="y"
-                                value={reqReducer.y}
-                                onChange={(e) => setY(e.target.value)}
+                                value={y}
+                                onChange={(e) => set_y(e.target.value)}
                                 required
                             />
                         </div>
@@ -62,8 +63,8 @@ export default function RequestForm() {
                                 className="form-control"
                                 id="r"
                                 name="r"
-                                value={reqReducer.r}
-                                onChange={(e) => setR(e.target.value)}
+                                value={r}
+                                onChange={(e) => set_r(e.target.value)}
                                 required
                             />
                         </div>

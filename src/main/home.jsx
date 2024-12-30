@@ -6,7 +6,6 @@ import ResultTable from "./resultTable";
 import loginState from "../zustandStates/LoginStore"
 
 export default function Home() {
-    console.log(loginState)
     return (
         <>
             <div className="home">

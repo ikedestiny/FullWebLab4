@@ -3,6 +3,8 @@ import { actions } from "../state/actionCreators/actions";
 import { useState, useEffect } from "react";
 import Notification from "../layout/Notification";
 import Circle from "./clicks";
+import LoginStore from "../zustandStates/LoginStore";
+import RequestStore from "../zustandStates/RequestStore";
 
 export default function Graph() {
     const xO = 280; // Origin X (center of SVG)
@@ -18,14 +20,15 @@ export default function Graph() {
 
     const radius = useSelector((state) => state.request.r); // to be used for sizing the graph
 
-    const dispatch = useDispatch();
-    const store = useSelector((state) => state);
-    const results = useSelector((state) => state.tableValues.results);
-    const token = useSelector((state) => state.loginRed.token);
+    // const dispatch = useDispatch();
+    // const store = useSelector((state) => state);
+    // const results = useSelector((state) => state.tableValues.results);
+    const token = LoginStore(state => state.token)
+    const { get_all, results, add_click, set_r, set_x, set_y } = RequestStore()
 
-    useEffect(() => {
-        dispatch(actions.GET_ALL(token)); // Fetch data when the component mounts
-    }, [dispatch]);
+    // useEffect(() => {
+    //     get_all(token); // Fetch data when the component mounts
+    // }, []);
 
     const handleClick = (e) => {
         const svg = e.target.closest("svg"); // Get the SVG element
@@ -39,7 +42,11 @@ export default function Graph() {
         const xCoord = (((svgCoords.x - xO) / scale) * 10 / 10).toFixed(2);
         const yCoord = (((yO - svgCoords.y) / scale) * 10 / 10).toFixed(2);
 
-        dispatch(actions.SEND_POINT(store.loginRed.token, { ...store.request, x: xCoord, y: yCoord, clicked: true, r: radius }, showNotification));
+        set_r(radius)
+        set_x(xCoord)
+        set_y(yCoord)
+        add_click(token)
+        //dispatch(actions.SEND_POINT(store.loginRed.token, { ...store.request, x: xCoord, y: yCoord, clicked: true, r: radius }, showNotification));
     };
 
     return (

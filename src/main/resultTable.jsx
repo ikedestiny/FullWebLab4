@@ -1,30 +1,28 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { actions } from "../state/actionCreators/actions";
-import useLogin from "../zustandStates/LoginStore"
-
-
+import { useEffect } from "react";
+import useLogin from "../zustandStates/LoginStore";
+import useResults from "../zustandStates/RequestStore";
 
 export default function ResultTable() {
-    const dispatch = useDispatch();
-    const results = useSelector((state) => state.tableValues.results);
-    const loading = useSelector((state) => state.tableValues.loading);
-    //const token = useSelector((state) => state.loginRed.token)
-    const {token} = useLogin()
-    // console.log(token)
-    // dispatch(actions.GET_ALL(to))
+    const token = useLogin((state) => state.token);
+    const { get_all, clear, results } = useResults();
 
     useEffect(() => {
-        dispatch(actions.GET_ALL(token)); // Fetch data when the component mounts
-    }, [dispatch]);
+        if (token) {
+            console.log("Fetching results with token:", token);
+            get_all(token); // Fetch data when the token is available
+        } else {
+            console.error("Token is missing; cannot fetch results.");
+        }
+    }, [token, get_all]);
 
     const handleClear = () => {
-        dispatch(actions.CLEAR_REQ(token)) // Clear data when the button is clicked
+        if (token) {
+            console.log("Clearing results with token:", token);
+            clear(token);
+        } else {
+            console.error("Token is missing; cannot clear results.");
+        }
     };
-
-    if (loading) {
-        return <p>Loading...</p>;
-    }
 
     return (
         <div>
@@ -44,8 +42,8 @@ export default function ResultTable() {
                 </thead>
                 <tbody>
                     {Array.isArray(results) && results.length > 0 ? (
-                        results.map(result => (
-                            <tr key={result.id}>
+                        results.map((result) => (
+                            <tr key={result.id || Math.random()}>
                                 <td>{result.x}</td>
                                 <td>{result.y}</td>
                                 <td>{result.r}</td>
