@@ -6,6 +6,7 @@ import Circle from "./clicks";
 import LoginStore from "../zustandStates/LoginStore";
 import RequestStore from "../zustandStates/RequestStore";
 
+
 export default function Graph() {
     const xO = 280; // Origin X (center of SVG)
     const yO = 280; // Origin Y (center of SVG)
@@ -18,7 +19,7 @@ export default function Graph() {
         setTimeout(() => setNotification({ show: false, message: "", type: "" }), 2000);
     };
 
-    const radius = useSelector((state) => state.request.r); // to be used for sizing the graph
+    const radius = RequestStore(state => state.r) // to be used for sizing the graph
 
     // const dispatch = useDispatch();
     // const store = useSelector((state) => state);
@@ -45,7 +46,7 @@ export default function Graph() {
         set_r(radius)
         set_x(xCoord)
         set_y(yCoord)
-        add_click(token)
+        add_click(token, showNotification)
         //dispatch(actions.SEND_POINT(store.loginRed.token, { ...store.request, x: xCoord, y: yCoord, clicked: true, r: radius }, showNotification));
     };
 

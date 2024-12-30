@@ -52,7 +52,7 @@ export const send_register_request = async (credentials) => {
  * @param {string} token - The user's authentication token.
  * @returns {Array} The results data.
  */
-export const get_all_results = async (token) => {
+export const get_all_results = async (token, showNotification) => {
     console.log("token for getAll --> " + token)
     if (!token) {
         console.error("Token is required to fetch results.");
@@ -68,10 +68,11 @@ export const get_all_results = async (token) => {
         });
 
         console.log("Results fetched successfully:", response.data);
+        showNotification("Results fetched successfully", "success")
         return await response.data;
     } catch (error) {
         console.error("Error fetching results:", error.response?.data || error.message);
-        alert(error)
+        showNotification("Error fetching results: " + error.response?.data || error.message, "error")
         // throw error;
     }
 };
@@ -109,7 +110,7 @@ export const send_delete_all_request = async (token) => {
  * @param {Object} params - The parameters to add.
  * @returns {Object} The response data from the backend.
  */
-export const send_add_request = async (token, params) => {
+export const send_add_request = async (token, params, showNotification) => {
     if (!token) {
         console.error("Token is required to add results.");
         throw new Error("Authentication token is missing.");
@@ -127,9 +128,10 @@ export const send_add_request = async (token, params) => {
         });
 
         console.log("Result added successfully:", JSON.stringify(response.data));
+        showNotification("Result added successfully", "info")
         return JSON.stringify(response.data)
     } catch (error) {
         console.error("Error during add request:", error.response?.data || error.message);
-        alert(error)
+        showNotification(error + "", "error")
     }
 };

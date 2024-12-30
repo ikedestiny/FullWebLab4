@@ -21,7 +21,7 @@ export default function RequestForm() {
     const onSubmit = async (e) => {
         console.log("token: " + token)
         e.preventDefault();
-        await add_point(token)
+        await add_point(token, showNotification)
     };
 
     return (

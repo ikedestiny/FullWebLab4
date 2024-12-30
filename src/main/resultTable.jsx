@@ -1,15 +1,24 @@
 import { useEffect } from "react";
 import useLogin from "../zustandStates/LoginStore";
 import useResults from "../zustandStates/RequestStore";
+import Notification from "../layout/Notification";
+import { useState } from "react";
 
 export default function ResultTable() {
     const token = useLogin((state) => state.token);
     const { get_all, clear, results } = useResults();
+    const [notification, setNotification] = useState({ show: false, message: "", type: "" });
+
+    const showNotification = (message, type) => {
+        setNotification({ show: true, message, type });
+        setTimeout(() => setNotification({ show: false, message: "", type: "" }), 2000);
+    };
+
 
     useEffect(() => {
         if (token) {
             console.log("Fetching results with token:", token);
-            get_all(token); // Fetch data when the token is available
+            get_all(token, showNotification); // Fetch data when the token is available
         } else {
             console.error("Token is missing; cannot fetch results.");
         }
@@ -26,6 +35,13 @@ export default function ResultTable() {
 
     return (
         <div>
+            {notification.show && (
+                <Notification
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotification({ show: false, message: "", type: "" })}
+                />
+            )}
             <button onClick={handleClear} className="btn btn-danger mb-3">
                 Clear Results
             </button>

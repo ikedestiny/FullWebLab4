@@ -11,36 +11,37 @@ const requestStore = (set, get) => ({
     set_y: (value) => set({ y: value }),
     set_r: (value) => set({ r: value }),
 
-    add_point: async (token) => {
+    add_point: async (token, showNotification) => {
         try {
             const { x, y, r, recieved } = get();
             const params = { x: x, y: y, r: r, clicked: false, recieved: recieved };
 
-            const response = await send_add_request(token, params);
-            set((state) => ({
-                results: [...state.results, response]
-            }));
+            const response = await send_add_request(token, params, showNotification);
+            set({
+                results: await get_all_results(token, showNotification)
+            });
             console.log(response);
         } catch (error) {
             console.error("Error adding point:", error);
         }
     },
 
-    add_click: async (token) => {
+    add_click: async (token, showNotification) => {
         try {
             const { x, y, r, recieved } = get();
             const params = { x: x, y: y, r: r, clicked: true, recieved: recieved };
-            const response = await send_add_request(token, params);
-            set({ results: await get_all_results(token) })
+            const response = await send_add_request(token, params, showNotification);
+            set({ results: await get_all_results(token, showNotification) })
             console.log(response);
         } catch (error) {
             console.error("Error adding click:", error);
+
         }
     },
 
-    get_all: async (token) => {
+    get_all: async (token, showNotification) => {
         try {
-            const response = await get_all_results(token);
+            const response = await get_all_results(token, showNotification);
             if (Array.isArray(response)) {
                 set({ results: response });
             } else {
